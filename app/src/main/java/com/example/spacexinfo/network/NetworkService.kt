@@ -10,8 +10,8 @@ import java.util.concurrent.TimeUnit
 class NetworkService {
     private val baseUrl = "https://api.spacexdata.com/v3/"
 
-    val getClient: ApiInterface
-    val getClientForOne: OneApiInterface
+    val client: ApiInterface
+    val clientForOne: OneApiInterface
 
     private fun initClient(): ApiInterface{
         val gson = GsonBuilder()
@@ -20,8 +20,9 @@ class NetworkService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .connectTimeout(3, TimeUnit.SECONDS)
+            .callTimeout(3, TimeUnit.SECONDS)
             .addInterceptor(interceptor).build()
 
         val retrofit = Retrofit.Builder()
@@ -41,8 +42,8 @@ class NetworkService {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
         val client = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(3, TimeUnit.SECONDS)
+            .connectTimeout(3, TimeUnit.SECONDS)
             .addInterceptor(interceptor).build()
 
         val retrofit = Retrofit.Builder()
@@ -56,7 +57,7 @@ class NetworkService {
 
 
     init {
-        getClient = initClient()
-        getClientForOne = initClientForOne()
+        client = initClient()
+        clientForOne = initClientForOne()
     }
 }

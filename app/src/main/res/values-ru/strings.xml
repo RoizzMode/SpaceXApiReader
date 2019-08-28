@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SpaceXInfo</string>
+    <string name="block_text">Количество блоков: %1$s</string>
+    <string name="cores_text">Ускоритель: %1$s, полет: %2$s, переиспользование: %3$s</string>
+    <string name="fail_message">Приложение работает в оффлайн режиме</string>
+    <string name="first_stage">Ускоритель первой ступени</string>
+    <string name="flight_number_text">Номер полета: %1$s</string>
+    <string name="launch_year_text">Год запуска: %1$s</string>
+    <string name="mission_name_text">Название миссии: %1$s</string>
+    <string name="no_photo">Нет фото</string>
+    <string name="payloads_text">ID груза: %1$s, тип: %2$s, национальность: %3$s, производитель: %4$s</string>
+    <string name="photo_desc">Фото запуска</string>
+    <string name="retry">Попробовать снова</string>
+    <string name="rocket">Ракета</string>
+    <string name="rocket_name_text">Название ракеты: %1$s</string>
+    <string name="rocket_type_text">Тип ракеты: %1$s</string>
+    <string name="second_stage">Вторая ступень</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="fail_connect">Не удалось подключиться к источнику</string>
+</resources>

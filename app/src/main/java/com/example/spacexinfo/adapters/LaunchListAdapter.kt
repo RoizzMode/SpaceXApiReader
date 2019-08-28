@@ -23,7 +23,7 @@ class LaunchListAdapter(private val launchListList: List<LaunchesInfo>, private 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val launch = launchListList[position]
 
-        holder.flightNumber.text = launch.flightNumber
+        holder.flightNumber.text = holder.launchView.resources.getString(R.string.flight_number_first, launch.flightNumber)
         holder.missionName.text = launch.missionName
         holder.launchYear.text = launch.launchYear
 

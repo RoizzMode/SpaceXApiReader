@@ -6,12 +6,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OneItemLoader(private val model: SpaceXModel) {
+class OneItemRepository(private val model: SpaceXModel) {
 
     private lateinit var launch: OneItemPOJO
 
     fun loadData(flightNumber: Int) {
-        val call = NetworkService().getClientForOne.getLaunch(flightNumber)
+        val call = NetworkService().clientForOne.getLaunch(flightNumber)
         call.enqueue(object : Callback<OneItemPOJO> {
 
             override fun onResponse(call: Call<OneItemPOJO>, response: Response<OneItemPOJO>) {
@@ -20,7 +20,7 @@ class OneItemLoader(private val model: SpaceXModel) {
             }
 
             override fun onFailure(call: Call<OneItemPOJO>, t: Throwable) {
-                model.oneItemLoadFailed()
+                model.loadOneFailed()
             }
         })
     }

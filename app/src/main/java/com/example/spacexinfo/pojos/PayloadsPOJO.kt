@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 class PayloadsPOJO(
     @SerializedName("payload_id")
-    val payloadId: String,
+    val payloadId: String?,
     @SerializedName("payload_type")
-    val payloadType: String,
+    val payloadType: String?,
     @SerializedName("nationality")
-    val nationality: String,
+    val nationality: String?,
     @SerializedName("manufacturer")
-    val manufacturer: String
+    val manufacturer: String?
 )

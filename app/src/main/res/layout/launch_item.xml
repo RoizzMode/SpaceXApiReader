@@ -39,7 +39,7 @@
                     android:textSize="12sp"/>
             <TextView
                     android:textStyle="bold"
-                    android:gravity="center_horizontal"
+                    android:gravity="start"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/mission_name"

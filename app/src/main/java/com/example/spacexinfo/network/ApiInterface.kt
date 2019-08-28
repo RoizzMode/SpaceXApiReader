@@ -8,5 +8,5 @@ import retrofit2.http.Query
 interface ApiInterface {
 
     @GET("launches")
-    fun getLaunches(@Query("offset") offset: Int?, @Query("limit") limit: Int): Call<List<LaunchListPOJO>>
+    fun getLaunches(@Query("offset") offset: Int, @Query("limit") limit: Int): Call<List<LaunchListPOJO>>
 }

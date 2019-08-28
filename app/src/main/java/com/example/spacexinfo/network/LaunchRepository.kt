@@ -1,6 +1,5 @@
 package com.example.spacexinfo.network
 
-import android.util.Log
 import com.example.spacexinfo.consts.ScrollConsts
 import com.example.spacexinfo.contracts.DataLoader
 import com.example.spacexinfo.data.SpaceXModel
@@ -9,16 +8,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LaunchLoader(private val model: SpaceXModel) : DataLoader {
+class LaunchRepository(private val model: SpaceXModel) : DataLoader {
 
-    private var isLoading = false
     var isLast = false
     private val launchList = arrayListOf<LaunchListPOJO>()
 
     override fun loadData(from: Int) {
-        if (!isLoading && !isLast) {
-            isLoading = true
-            val call = NetworkService().getClient.getLaunches(from, ScrollConsts.PAGE_SIZE)
+            val call = NetworkService().client.getLaunches(from, ScrollConsts.PAGE_SIZE)
             call.enqueue(object : Callback<List<LaunchListPOJO>> {
 
                 override fun onResponse(call: Call<List<LaunchListPOJO>>, response: Response<List<LaunchListPOJO>>) {
@@ -27,14 +23,12 @@ class LaunchLoader(private val model: SpaceXModel) : DataLoader {
                     launchList.clear()
                     launchList.addAll(response.body() ?: throw NullPointerException())
                     model.launchListLoaded()
-                    isLoading = false
                 }
 
                 override fun onFailure(call: Call<List<LaunchListPOJO>>, t: Throwable) {
-                    Log.e("FailLoad", t.toString())
+                    model.loadFailed()
                 }
             })
-        }
     }
 
     override fun getData(): List<LaunchListPOJO> {

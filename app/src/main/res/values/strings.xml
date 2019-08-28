@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">SpaceXInfo</string>
+    <string name="app_name"
+    >SpaceXInfo
+    </string>
     <string name="rocket">Rocket</string>
     <string name="first_stage">First stage core</string>
     <string name="second_stage">Second stage</string>
@@ -11,6 +13,19 @@
     <string name="block_text">Number of blocks: %1$s</string>
     <string name="payloads_text">Payload: ID: %1$s, type: %2$s, nationality: %3$s, manufacturer: %4$s</string>
     <string name="cores_text">Core serial: %1$s, flight: %2$s, was reused: %3$s</string>
-    <string name="fail_message">Failed to connect to the source</string>
+    <string name="fail_message">The App is working offline</string>
     <string name="retry">retry</string>
+    <string name="flight_number_first"
+            translatable="false">№ %1$s
+    </string>
+    <string name="photo_desc">Photo of launch</string>
+    <string name="no_photo">No photo</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="TBA"
+            translatable="false">TBA
+    </string>
+    <string name="fail_connect">Failed to connect to the source</string>
+    <string name="download">Download</string>
+    <string name="open_with">Open with</string>
 </resources>

@@ -12,4 +12,5 @@ class OneLaunchInfo(val flightNumber: String,
                     val payloadId: String,
                     val payloadType: String,
                     val nationality: String,
-                    val manufacturer: String)
+                    val manufacturer: String
+)

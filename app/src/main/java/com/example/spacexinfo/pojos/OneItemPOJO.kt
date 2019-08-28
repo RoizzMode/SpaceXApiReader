@@ -10,5 +10,7 @@ class OneItemPOJO(
     @SerializedName("launch_year")
     val launchYear: Int,
     @SerializedName("rocket")
-    val rocket: RocketPOJO
+    val rocket: RocketPOJO,
+    @SerializedName("links")
+    val links: LinkPOJO
 )

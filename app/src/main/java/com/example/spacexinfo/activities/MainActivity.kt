@@ -37,18 +37,18 @@ class MainActivity : AppCompatActivity() {
     private fun initLargeScreen(){
         listLaunchesFragment = ListLaunchesFragment()
         oneLaunchFragment = OneLaunchFragment()
-        replaceFragment(R.id.container_left, listLaunchesFragment)
-        replaceFragment(R.id.container_right, oneLaunchFragment)
+        replaceFragment(R.id.container_left, listLaunchesFragment, "list")
+        replaceFragment(R.id.container_right, oneLaunchFragment, "one")
     }
 
     private fun initSmallScreen(){
         val listLaunchesFragment = ListLaunchesFragment()
-        replaceFragment(R.id.container, listLaunchesFragment)
+        replaceFragment(R.id.container, listLaunchesFragment, "list")
     }
 
-    private fun replaceFragment(container: Int, fragment: Fragment){
+    private fun replaceFragment(container: Int, fragment: Fragment, tag: String){
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(container, fragment)
+        fragmentTransaction.replace(container, fragment, tag)
         fragmentTransaction.commit()
     }
 }

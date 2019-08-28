@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 class CoresPOJO(
     @SerializedName("core_serial")
-    val coreSerial: String,
+    val coreSerial: String?,
     @SerializedName("flight")
-    val flight: Int,
+    val flight: Int?,
     @SerializedName("reused")
-    val reused: Boolean
+    val reused: Boolean?
 
 )

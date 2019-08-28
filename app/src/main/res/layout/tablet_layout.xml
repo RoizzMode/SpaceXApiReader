@@ -11,13 +11,10 @@
             android:layout_height="0dp"
             android:id="@+id/container_left"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/container_right"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="8dp"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+            app:layout_constraintTop_toBottomOf="@+id/fail_message">
     </LinearLayout>
     <LinearLayout
             android:orientation="horizontal"
@@ -25,13 +22,10 @@
             android:layout_height="0dp"
             android:id="@+id/container_right"
             app:layout_constraintStart_toEndOf="@+id/container_left"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_weight="3"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar2">
+            app:layout_constraintTop_toBottomOf="@+id/fail_message">
     </LinearLayout>
     <androidx.appcompat.widget.Toolbar
             android:layout_width="0dp"
@@ -45,4 +39,15 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toTopOf="parent"
     />
+    <TextView
+            android:text="@string/fail_message"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/fail_message"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/colorAccent"
+            android:visibility="invisible"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
