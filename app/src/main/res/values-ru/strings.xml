@@ -19,4 +19,11 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="fail_connect">Не удалось подключиться к источнику</string>
+    <string name="open_with">Открыть с помощью</string>
+    <string name="download">Загрузить</string>
+    <string name="download_success">Изображение было сохранено</string>
+    <string name="fail_download">Не удалось сохранить изображение</string>
+    <string name="loading_message">Пожалуйста, подождите, идет сохранение</string>
+    <string name="fail_intent_message">Something went wrong</string>
+    <string name="file_couldnt_create">Файл не был создан</string>
 </resources>

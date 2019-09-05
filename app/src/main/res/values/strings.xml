@@ -28,4 +28,9 @@
     <string name="fail_connect">Failed to connect to the source</string>
     <string name="download">Download</string>
     <string name="open_with">Open with</string>
+    <string name="fail_download">Failed to download image</string>
+    <string name="loading_message">Please wait, the image is downloading</string>
+    <string name="download_success">The image was downloaded</string>
+    <string name="fail_intent_message">Something went wrong</string>
+    <string name="file_couldnt_create">File could not be created</string>
 </resources>

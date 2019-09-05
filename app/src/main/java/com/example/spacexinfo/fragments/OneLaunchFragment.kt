@@ -1,7 +1,7 @@
 package com.example.spacexinfo.fragments
 
+import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -31,9 +32,10 @@ class OneLaunchFragment : Fragment() {
     private lateinit var viewModel: OneItemViewModel
     private var isLarge = false
     private var flightNumberShared = 1
+    private lateinit var imageUri: Uri
+    private lateinit var missionName: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         initToolbar()
         initViewModelAndObservers()
 
@@ -47,17 +49,11 @@ class OneLaunchFragment : Fragment() {
         if (sharedPrefs?.contains(FLIGHT_NUMBER) == true && flightNumber == null)
             flightNumber = sharedPrefs.getInt(FLIGHT_NUMBER, 1)
         viewModel.viewCreated(flightNumber ?: 1)
-        initButton()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> activity?.onBackPressed()
-        }
-        return super.onOptionsItemSelected(item)
+        initButtons()
     }
 
     private fun initToolbar() {
+        setHasOptionsMenu(true)
         isLarge = DeviceSizeAnalyser(activity?.applicationContext ?: throw NullPointerException()).isLarge()
         if (!isLarge) {
             (activity as AppCompatActivity).supportActionBar?.title = "Launch detail info"
@@ -66,15 +62,34 @@ class OneLaunchFragment : Fragment() {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity?.onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.viewResumed()
+    }
+
     private fun initViewModelAndObservers() {
         viewModel = ViewModelProviders.of(
             this,
-            OneLaunchViewModelFactory((activity?.application as SpaceXApplication).spaceXModel, isLarge)
+            OneLaunchViewModelFactory((activity?.application as SpaceXApplication).spaceXModel)
         ).get(OneLaunchViewModel::class.java)
-        viewModel.oneLaunchInfo.observe(viewLifecycleOwner, Observer { showInfo(it)
-        flightNumberShared = it.flightNumber.toInt()
+        viewModel.oneLaunchInfo.observe(viewLifecycleOwner, Observer {
+            showInfo(it)
+            flightNumberShared = it.flightNumber.toInt()
+            missionName = it.missionName
         })
-        viewModel.oneLaunchPhoto.observe(viewLifecycleOwner, Observer { showPhoto(it) })
+        viewModel.oneLaunchPhoto.observe(viewLifecycleOwner, Observer {
+            imageUri = it
+            showPhoto(it)
+        })
         viewModel.photoVisibility.observe(viewLifecycleOwner, Observer { setPhotoVisibility(it) })
         viewModel.infoVisibility.observe(viewLifecycleOwner, Observer { setInfoVisibility(it) })
         viewModel.progressBarVisibility.observe(viewLifecycleOwner, Observer { setProgressBarVisibility(it) })
@@ -85,7 +100,7 @@ class OneLaunchFragment : Fragment() {
         viewModel.failMessageVisibility.observe(viewLifecycleOwner, Observer { setFailMessageVisibility(it) })
         viewModel.magnifierVisibility.observe(viewLifecycleOwner, Observer { setMagnifierVisibility(it) })
         viewModel.changeScreenIndicator.observe(viewLifecycleOwner, Observer {
-            if (it.getContentIfNotHandled() != null)
+            if (it.getEventOrNullIfHandled() != null)
                 changeScreen()
         })
     }
@@ -143,9 +158,12 @@ class OneLaunchFragment : Fragment() {
         failMessage.isVisible = visibility
     }
 
-    private fun initButton() {
+    private fun initButtons() {
         retryButton.setOnClickListener {
             viewModel.retryButtonClicked()
+        }
+        magnifier.setOnClickListener {
+            viewModel.magnifierClicked()
         }
     }
 
@@ -157,11 +175,17 @@ class OneLaunchFragment : Fragment() {
         magnifier.isVisible = visibility
     }
 
-    private fun changeScreen(){
-        val intent = Intent(activity, ImageActivity::class.java)
+    private fun changeScreen() {
+        val intent = ImageActivity.getStartIntent(this.activity as Activity, imageUri, missionName)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            activity as Activity,
+            (activity as Activity).findViewById(R.id.rocketPhoto),
+            "photo"
+        )
+        startActivity(intent, options.toBundle())
     }
 
-    companion object{
+    companion object {
         private const val APP_PREFERENCES = "sharedNumber"
         private const val FLIGHT_NUMBER = "flightNumber"
     }

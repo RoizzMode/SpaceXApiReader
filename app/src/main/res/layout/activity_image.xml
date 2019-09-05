@@ -7,29 +7,43 @@
                                                    android:layout_height="match_parent"
                                                    tools:context=".activities.ImageActivity">
 
+    <TextView
+            android:text="@string/fail_intent_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fail_intent_message"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:visibility="visible"/>
     <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:srcCompat="@android:drawable/alert_dark_frame"
-            android:id="@+id/imageView"
+            app:srcCompat="@android:drawable/screen_background_light"
+            android:id="@+id/rocketPhotoLarge"
             android:transitionName="photo"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintBottom_toTopOf="@+id/download_button"
             android:layout_marginBottom="8dp"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription"
+            app:layout_constraintTop_toTopOf="parent"/>
     <Button
             android:text="@string/download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/download_button"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/rocketPhotoLarge"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             app:layout_constraintEnd_toStartOf="@+id/open_with_button"

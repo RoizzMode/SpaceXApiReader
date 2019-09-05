@@ -2,10 +2,12 @@ package com.example.spacexinfo.bases
 
 import androidx.room.*
 
-@Entity(tableName = "Details", indices = [Index(value = ["flightNumber"], unique = true)], foreignKeys = [ForeignKey(entity = LaunchesEntity::class, parentColumns = ["flightNumber"], childColumns = ["flightNumber"])])
+@Entity(tableName = "Details", indices = [Index(value = ["flightNumber", "missionName"], unique = true)], foreignKeys = [ForeignKey(entity = LaunchesEntity::class, parentColumns = ["flightNumber", "missionName"], childColumns = ["flightNumber", "missionName"])])
 class DetailEntity(@PrimaryKey(autoGenerate = true) val id: Int = 0,
                    @ColumnInfo(name = "flightNumber")
                    val flightNumber: Int,
+                   @ColumnInfo(name = "missionName")
+                   val missionName: String,
                    val coreSerial: String?,
                    val flight: Int?,
                    val wasReused: Boolean?,

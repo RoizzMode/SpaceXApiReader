@@ -1,7 +1,6 @@
 package com.example.spacexinfo.viewModels
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.spacexinfo.contracts.DataLoadListener
@@ -9,7 +8,7 @@ import com.example.spacexinfo.contracts.OneItemViewModel
 import com.example.spacexinfo.data.OneLaunchInfo
 import com.example.spacexinfo.data.SpaceXModel
 
-class OneLaunchViewModel(private val model: SpaceXModel, private val isLarge: Boolean) : ViewModel(), OneItemViewModel {
+class OneLaunchViewModel(private val model: SpaceXModel) : ViewModel(), OneItemViewModel {
 
     private lateinit var listener: DataLoadListener<OneLaunchInfo?>
 
@@ -75,12 +74,15 @@ class OneLaunchViewModel(private val model: SpaceXModel, private val isLarge: Bo
         }
 
         model.flightNumber = flightNumber
-        model.setOnOneItemLoadListener(listener)
         model.loadOneLaunch()
     }
 
     override fun viewStopped() {
         model.removeOnOneItemLoadListener(listener)
+    }
+
+    override fun viewResumed() {
+        model.setOnOneItemLoadListener(listener)
     }
 
     override fun retryButtonClicked() {

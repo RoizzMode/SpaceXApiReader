@@ -1,9 +1,12 @@
 package com.example.spacexinfo.data
 
-import android.content.Context
+import android.content.*
+import android.content.res.Resources
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import com.example.spacexinfo.R
 import com.example.spacexinfo.bases.AppDatabase
 import com.example.spacexinfo.bases.DetailEntity
@@ -13,26 +16,34 @@ import com.example.spacexinfo.network.LaunchRepository
 import com.example.spacexinfo.network.OneItemRepository
 import com.example.spacexinfo.pojos.*
 import java.lang.ref.WeakReference
+import com.example.spacexinfo.contracts.ImageDownloadListener
+import java.io.File
+
 
 class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
 
     private val oneLaunchLoader = OneItemRepository(this)
     private val launchLoader = LaunchRepository(this)
 
+    val resources: Resources? = context.resources
+
     private var launchList = arrayListOf<LaunchListPOJO>()
     private var oneLaunch: OneItemPOJO? = null
+    lateinit var bmp: Bitmap
 
     private val dataListeners = arrayListOf<WeakReference<DataLoadListener<List<LaunchesInfo>>>>()
     private val oneItemListeners = arrayListOf<WeakReference<DataLoadListener<OneLaunchInfo?>>>()
+    val imageListeners = arrayListOf<WeakReference<DataLoadListener<Uri?>>>()
+    val imageDownloadListeners = arrayListOf<WeakReference<ImageDownloadListener>>()
 
     private val launchesDAO = appDatabase.launchesDao()
     private val detailsDAO = appDatabase.detailsDao()
 
     var flightNumber = 1
     var isLast = false
-    private var isError = false
-    private var startedLoading = false
-    private var isLoading = false
+    var isError = false
+    var startedLoading = false
+    var isLoading = false
 
     fun loadLaunches() {
         if (!isLoading) {
@@ -41,7 +52,7 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
         }
     }
 
-    private fun getLaunches(): List<LaunchesInfo> {
+    fun getLaunches(): List<LaunchesInfo> {
         val launchesInfo = arrayListOf<LaunchesInfo>()
         for (i in 0..launchList.lastIndex) {
             launchesInfo.add(
@@ -71,6 +82,7 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
         launchList.addAll(list)
         val thread = Thread {
             for (i in 0..list.lastIndex) {
+                Log.v("fn", list[i].flightNumber.toString())
                 launchesDAO.insert(
                     LaunchesEntity(
                         flightNumber = list[i].flightNumber,
@@ -100,6 +112,7 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
                     val detailForUpdate = DetailEntity(
                         id = id,
                         flightNumber = item.flightNumber,
+                        missionName = item.missionName,
                         coreSerial = item.rocket.firstStage.cores[0].coreSerial,
                         flight = item.rocket.firstStage.cores[0].flight,
                         wasReused = item.rocket.firstStage.cores[0].reused,
@@ -116,10 +129,10 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
                         }
                     )
                     detailsDAO.update(detailForUpdate)
-                }
-                else {
+                } else {
                     val detailForInsert = DetailEntity(
                         flightNumber = item.flightNumber,
+                        missionName = item.missionName,
                         coreSerial = item.rocket.firstStage.cores[0].coreSerial,
                         flight = item.rocket.firstStage.cores[0].flight,
                         wasReused = item.rocket.firstStage.cores[0].reused,
@@ -215,6 +228,7 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
     }
 
     fun initModel() {
+        clearCache(context.cacheDir)
         getLaunchesFromDB()
     }
 
@@ -268,7 +282,7 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
         thread.start()
     }
 
-    fun loadOneFailed(){
+    fun loadOneFailed() {
         startedLoading = false
         isError = true
         getOneItemFromDB()
@@ -300,4 +314,62 @@ class SpaceXModel(private val context: Context, appDatabase: AppDatabase) {
         }
     }
 
+    fun setImageListener(listener: DataLoadListener<Uri?>?) {
+        if (listener != null)
+            imageListeners.add(WeakReference(listener))
+    }
+
+    fun removeImageListener(listener: DataLoadListener<Uri?>?) {
+        for (i in 0..imageListeners.lastIndex) {
+            if (imageListeners[i].get() == listener) {
+                imageListeners.removeAt(i)
+                break
+            }
+        }
+    }
+
+    fun setImageDownloadListener(listener: ImageDownloadListener?) {
+        if (listener != null)
+            imageDownloadListeners.add(WeakReference(listener))
+    }
+
+    fun removeImageDownloadListener(listener: ImageDownloadListener?) {
+        for (i in 0..imageDownloadListeners.lastIndex) {
+            if (imageDownloadListeners[i].get() == listener) {
+                imageDownloadListeners.removeAt(i)
+                break
+            }
+        }
+    }
+
+    fun downloadImage(uri: Uri) {
+        ImageDownloaderAndOpener(this).downloadBitmapToUri(context.contentResolver, uri, bmp)
+    }
+
+    fun notifyErrorCase(isLoading: Boolean, isError: Boolean) {
+        for (i in 0..imageDownloadListeners.lastIndex) {
+            if (imageDownloadListeners[i].get() != null) {
+                imageDownloadListeners[i].get()?.onStateChanged(isLoading, isError)
+            }
+        }
+    }
+
+    fun createFileInCacheAndGetUri(bmp: Bitmap, name: String) {
+        ImageDownloaderAndOpener(this).createFileInCacheAndGetUri(bmp, name, context)
+    }
+
+    fun notifySuccessCase(uri: Uri){
+        notifyListeners(imageListeners, uri)
+    }
+
+    private fun clearCache(dir: File){
+        val files = dir.listFiles() ?: return
+        for (i in 0..files.lastIndex){
+            files[i].delete()
+        }
+    }
+
+    companion object {
+        const val fileProviderAuthority = "com.example.spacexinfo.fileprovider"
+    }
 }

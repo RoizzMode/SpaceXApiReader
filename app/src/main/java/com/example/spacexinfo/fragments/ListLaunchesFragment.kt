@@ -1,6 +1,7 @@
 package com.example.spacexinfo.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,13 +49,15 @@ class ListLaunchesFragment : Fragment() {
         initButton()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-    }
     override fun onStop() {
         super.onStop()
         viewModel.viewStopped()
+    }
+
+    override fun onResume() {
+        Log.v("resume", "resume")
+        super.onResume()
+        viewModel.viewResumed()
     }
 
     private fun initToolbar(){
@@ -80,7 +83,7 @@ class ListLaunchesFragment : Fragment() {
         viewModel.retryButtonVisibility.observe(viewLifecycleOwner, Observer { setRetryButtonVisibility(it) })
 
         viewModel.changeScreenWatcher.observe(viewLifecycleOwner, Observer {
-            val num = it?.getContentIfNotHandled()
+            val num = it?.getEventOrNullIfHandled()
             if (num != null)
                 changeScreen(num)
         })

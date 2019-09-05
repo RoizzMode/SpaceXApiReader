@@ -51,7 +51,7 @@ class ListLaunchesViewModel(private val model: SpaceXModel, private val isLarge:
                 }
             }
         }
-        model.setOnDataLoadListener(loadListener)
+//        model.setOnDataLoadListener(loadListener)
     }
 
     override fun itemClicked(position: Int) {
@@ -65,6 +65,11 @@ class ListLaunchesViewModel(private val model: SpaceXModel, private val isLarge:
 
     override fun viewStopped() {
         model.removeOnDataLoadListener(loadListener)
+    }
+
+    override fun viewResumed() {
+        listLaunches.value = model.getLaunches()
+        model.setOnDataLoadListener(loadListener)
     }
 
     override fun retryButtonClicked() {

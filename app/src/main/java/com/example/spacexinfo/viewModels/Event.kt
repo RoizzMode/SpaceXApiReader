@@ -2,10 +2,9 @@ package com.example.spacexinfo.viewModels
 
 open class Event<out T>(private val content: T) {
 
-    var hasBeenHandled = false
-        private set
+    private var hasBeenHandled = false
 
-    fun getContentIfNotHandled(): T? {
+    fun getEventOrNullIfHandled(): T? {
         return if (hasBeenHandled) {
             null
         } else {

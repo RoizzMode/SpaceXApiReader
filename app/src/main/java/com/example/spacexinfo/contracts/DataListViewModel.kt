@@ -24,5 +24,7 @@ interface DataListViewModel: RecyclerScroller, RecyclerClickListener {
 
     fun viewStopped()
 
+    fun viewResumed()
+
     fun retryButtonClicked()
 }

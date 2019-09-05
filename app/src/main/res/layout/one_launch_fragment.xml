@@ -85,7 +85,7 @@
             <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_search"
+                    app:srcCompat="@drawable/ic_24px"
                     android:id="@+id/magnifier"
                     app:layout_constraintBottom_toBottomOf="@+id/rocketPhoto"
                     app:layout_constraintTop_toTopOf="@+id/rocketPhoto"

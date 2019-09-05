@@ -33,6 +33,8 @@ interface OneItemViewModel {
 
     fun viewStopped()
 
+    fun viewResumed()
+
     fun retryButtonClicked()
 
     fun magnifierClicked()
